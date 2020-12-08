@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from "../auth/header";
-import Footer from "../auth/header";
+import Footer from "../auth/footer";
 
 const AuthLayout = ({children}) => {
     return <>

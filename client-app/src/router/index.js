@@ -1,3 +1,4 @@
+import Users from "pages/users";
 import Home from "pages/home";
 import Login from "pages/auth/Login";
 import AuthLayout from "layouts/auth";
@@ -13,6 +14,11 @@ const router = [
     {
         path: '/login',
         component: Login,
+        layout : AuthLayout,
+    },
+    {
+        path: '/users',
+        component: Users,
         layout : AuthLayout,
     },
 ]

@@ -99,18 +99,20 @@ export const customRequest = (method, resource, data) => {
  * @param error
  */
 export const handleError = error => {
-  const {
-    response: { status },
-  } = error;
+    if (!error.response) {
+        console.log(error)
+        return
+    }
+    const status = error.response.status;
 
-  if (status === 401) {
-    removeToken()
-    alert('Permission denied!')
-  }
+    if (status === 401) {
+        removeToken()
+        alert('Permission denied!')
+    }
 
-  if (status === 403) {
-    alert('Permission denied!')
-  }
+    if (status === 403) {
+        alert('Permission denied!')
+    }
 }
 
 export default {
