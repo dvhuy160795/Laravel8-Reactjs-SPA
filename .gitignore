@@ -16,6 +16,6 @@ yarn-error.log
 composer.lock
 phpcbf.phar
 phpcs.phar
-nginx
-nginx-app
+/nginx
+/nginx-app
 db
