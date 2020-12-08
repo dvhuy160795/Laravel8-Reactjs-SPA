@@ -1,0 +1,85 @@
+#!/bin/sh
+#
+EXIST_CODE=0
+readonly BACKGROUND_GREEN_COLOR='\033[0;42m'
+readonly RED_COLOR='\033[0;31m'
+readonly ORANGE_COLOR='\033[0;33m'
+readonly GREEN_COLOR='\033[0;32m'
+readonly NO_COLOR='\033[0m'
+readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!*.blade.php' ':!vendor/' ':!config/' ':!routes/' ':!app/Providers')
+readonly PHP_STAGED_FILES_SEPARATE_BY_SPACE=$(echo -e $PHP_STAGED_FILES | tr "\n" " ")
+
+output_start() {
+    echo "${BACKGROUND_GREEN_COLOR}$1${NO_COLOR}"
+}
+
+output_error() {
+    echo "${RED_COLOR}$1${NO_COLOR}"
+}
+
+output_warning() {
+    echo "${ORANGE_COLOR}$1${NO_COLOR}"
+}
+
+output_success() {
+    echo "${GREEN_COLOR}$1${NO_COLOR}"
+}
+
+output_ending_line() {
+    printf '%.s=' {1..79}
+    echo ''
+}
+
+check_syntax_error() {
+    #check empty string
+    [[ -z "${PHP_STAGED_FILES}" ]] && return 0
+
+    echo "check_syntax_error"
+    php -v > /dev/null 2>&1
+
+    if [[ "$?" != "0" ]]; then
+        output_warning "Skipping task: php files check syntax error because not found 'php' in system PATH"
+        return 0
+    fi
+
+    for file in ${PHP_STAGED_FILES_SEPARATE_BY_SPACE};
+    do
+        [[ ! -f $file ]] && continue
+        output_warning php -l $file 1>/dev/null
+        [[ $? -ne 0 ]] && EXIT_CODE=1
+    done
+    output_ending_line
+}
+
+check_coding_conversion() {
+    echo "check_coding_conversion"
+    for file in ${PHP_STAGED_FILES_SEPARATE_BY_SPACE};
+    do
+        [[ ! -f $file ]] && continue
+        php tools/git/hooks/phpcbf.phar $file 1>/dev/null
+        php tools/git/hooks/phpcs.phar --standard=psr2 $file 2>/dev/null
+        [[ $? -ne 0 ]] && EXIT_CODE=1
+    done
+    output_ending_line
+}
+
+check_debugging() {
+    echo "check_debugging"
+    for file in ${PHP_STAGED_FILES_SEPARATE_BY_SPACE};
+    do
+        [[ ! -f $file ]] && continue
+        grep -rnw $file -e 'dump(' -e 'dd(' -e 'exit' -e 'die(' -e 'var_dump('
+        [[ $? -ne 0 ]] && EXIT_CODE=1
+    done
+    output_ending_line
+}
+
+main() {
+    check_syntax_error
+    check_coding_conversion
+    check_debugging
+    exit $EXIT_CODE
+}
+
+main
+

@@ -1,0 +1,59 @@
+version: "3.1"
+services:
+  server:
+    build:
+      context: .docker/Nginx
+    restart: 'no'
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./public:/var/www/html/public
+      - ./.docker/Nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/:/var/log/nginx/
+    depends_on:
+      - api
+  client:
+    build:
+      context: .docker/Nginx-App
+    restart: 'no'
+    ports:
+      - 82:80
+      - 446:443
+    volumes:
+      - ./client-app/build:/var/www/html/public
+      - ./.docker/Nginx-App/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx-app/:/var/log/nginx/
+    depends_on:
+      - api
+  api:
+    build:
+      context: .docker/Api
+    restart: "no"
+    depends_on:
+      - db
+    volumes:
+      - ./:/var/www/html
+      - ./.docker/Api/Config/etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./.docker/Api/Config/etc/php/php.ini-development:/usr/local/etc/php/php.ini-development
+  db:
+    build:
+      context: .docker/Mysql
+    restart: "no"
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./.docker/Mysql/my.cnf:/etc/mysql/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-sakura}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-e_stragegic}
+      - MYSQL_USER=${MYSQL_USER:-ebase}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-qwerty123456}
+    ports:
+      - 1203:3306
+#disk
+volumes:
+  dir-site:
+    driver_opts:
+      device: ./
+      o: bind
+      type: tmpfs
