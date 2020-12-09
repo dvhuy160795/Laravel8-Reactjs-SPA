@@ -2,8 +2,8 @@ import {getToken, removeToken} from './token'
 
 export const baseURL = 'https://jsonplaceholder.typicode.com/'
 export const headers = {
-  'Content-type': 'application/json; charset=UTF-8',
-  'Authorization': `Bearer ${getToken()}`
+    // 'Content-type': 'application/json; charset=UTF-8',
+    // 'Authorization': `Bearer ${getToken()}`
 }
 
 export const get = (resource) => {

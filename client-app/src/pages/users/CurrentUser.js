@@ -8,8 +8,8 @@ const CurrentUser = () => {
 
     useEffect(() => {
         dispatch(getDetailUser())
-    })
-    
+    },[])
+
     if (!user) {
         return (<h1>Loading....</h1>)
     }

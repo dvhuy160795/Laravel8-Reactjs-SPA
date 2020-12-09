@@ -13,19 +13,19 @@ services:
       - ./nginx/:/var/log/nginx/
     depends_on:
       - api
-  client:
-    build:
-      context: .docker/Nginx-App
-    restart: 'no'
-    ports:
-      - 82:80
-      - 446:443
-    volumes:
-      - ./client-app/build:/var/www/html/public
-      - ./.docker/Nginx-App/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx-app/:/var/log/nginx/
-    depends_on:
-      - api
+#  client:
+#    build:
+#      context: .docker/Nginx-App
+#    restart: 'no'
+#    ports:
+#      - 82:80
+#      - 446:443
+#    volumes:
+#      - ./client-app/build:/var/www/html/public
+#      - ./.docker/Nginx-App/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+#      - ./nginx-app/:/var/log/nginx/
+#    depends_on:
+#      - api
   api:
     build:
       context: .docker/Api
