@@ -3,13 +3,9 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
+
 class UserRepository extends RepositoryAbstract
 {
-    /**
-     * @inheritDoc
-     */
-    public function getModel()
-    {
-        // TODO: Implement getModel() method.
-    }
+    protected $model = User::class;
 }

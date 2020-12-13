@@ -3,6 +3,7 @@ import Home from "pages/home";
 import Login from "pages/auth/Login";
 import AuthLayout from "layouts/auth";
 import MainLayout from "layouts/main";
+import Register from "pages/auth/Register";
 
 const router = [
     {
@@ -14,6 +15,11 @@ const router = [
     {
         path: '/login',
         component: Login,
+        layout : AuthLayout,
+    },
+    {
+        path: '/register',
+        component: Register,
         layout : AuthLayout,
     },
     {

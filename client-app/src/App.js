@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import routers from 'router'
@@ -12,14 +13,16 @@ const {store} = configureStore()
  * @returns {*}
  * @constructor
  */
-function App() {
+function App({t}) {
   return (
       <Provider store={store}>
           <BrowserRouter>
             <Switch>
-              {routers.map((router) => {
-                  return (<CustomRoute key={router.path} {...router}/>)
-              })}
+                <Suspense fallback="loading">
+                    {routers.map((router) => {
+                        return (<CustomRoute key={router.path} {...router}/>)
+                    })}
+                </Suspense>
             </Switch>
           </BrowserRouter>
       </Provider>

@@ -27,7 +27,6 @@ class AttachmentsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all(),$request->allFiles());
         return Response::responseSusscess($request->all());
     }
 

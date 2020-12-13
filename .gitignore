@@ -19,3 +19,4 @@ phpcs.phar
 /nginx
 /nginx-app
 db
+.DS_Store

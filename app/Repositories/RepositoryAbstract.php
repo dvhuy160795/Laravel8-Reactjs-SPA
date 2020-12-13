@@ -61,9 +61,19 @@ abstract class RepositoryAbstract implements RepositoryInterface
      * @return Illuminate\\Database\\Eloquent\\Model
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function insert(array $data)
+    public function create(array $data)
     {
         return $this->model()->create($data);
+    }
+
+    /**
+     * @param array $data
+     * @return Illuminate\\Database\\Eloquent\\Model
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function insert(array $data)
+    {
+        return $this->model()->insert($data);
     }
 
     /**

@@ -1,9 +1,10 @@
 import {getToken, removeToken} from './token'
+import {makeFromData} from "common/form";
 
-export const baseURL = 'https://jsonplaceholder.typicode.com/'
+export const baseURL = 'http://e_stragegic.local/api/'
 export const headers = {
     // 'Content-type': 'application/json; charset=UTF-8',
-    // 'Authorization': `Bearer ${getToken()}`
+    'Authorization': `Bearer ${getToken()}`
 }
 
 export const get = (resource) => {
@@ -21,11 +22,13 @@ export const get = (resource) => {
 export const post = (resource, data) => {
   return fetch(baseURL + resource, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: makeFromData(data),
     headers: headers,
   })
-      .then((response) => response.json())
-      .catch(handleError)
+      .then(handleResponse)
+      // .then((response) => response.json())
+      // .then(handleResponse)
+      // .catch(handleError)
 }
 
 /**
@@ -86,32 +89,56 @@ export const deleted = (resource) => {
 export const customRequest = (method, resource, data) => {
   return fetch(baseURL + resource, {
     method: method,
-    body: JSON.stringify(data),
+    body: JSON.stringify(makeFromData(data)),
     headers: headers,
   })
-      .then((response) => response.json())
-      .then((json) => console.log(json))
       .catch(handleError)
+      .then(handleResponse)
+      .then((response) => response.json())
+
+      .then((json) => console.log(json))
+
 }
 
 /**
  * Handle error from API
  * @param error
  */
-export const handleError = error => {
+const handleError = error => {
+    console.log(error);
     if (!error.response) {
         console.log(error)
-        return
+    } else {
     }
-    const status = error.response.status;
+    console.log(error.response)
+    return false
+}
+
+/**
+ * Handle response from API
+ * @param response
+ */
+const handleResponse = response => {
+    const status = response.status;
+    console.log(response)
+    if (status === 200) {
+        return response.data
+    }
+
+    if (status === 400) {
+        alert('Permission denied!')
+    }
 
     if (status === 401) {
-        removeToken()
         alert('Permission denied!')
     }
 
     if (status === 403) {
         alert('Permission denied!')
+    }
+
+    if (status === 302) {
+        alert('invalid')
     }
 }
 

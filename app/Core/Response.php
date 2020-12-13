@@ -20,7 +20,7 @@ class Response
      * @return \Illuminate\Http\JsonResponse|object
      * @throws \Exception
      */
-    public static function responseContinue(array $data, $statusCode = BaseResponse::HTTP_CONTINUE)
+    public static function responseContinue($data, $statusCode = BaseResponse::HTTP_CONTINUE)
     {
         self::validateStatusCode(self::STATUS_CONTINUE, $statusCode);
 
@@ -40,7 +40,7 @@ class Response
      * @return \Illuminate\Http\JsonResponse|object
      * @throws \Exception
      */
-    public static function responseSusscess(array $data, $statusCode = BaseResponse::HTTP_OK)
+    public static function responseSusscess($data, $statusCode = BaseResponse::HTTP_OK)
     {
         self::validateStatusCode(self::STATUS_SUCCESS, $statusCode);
 
@@ -60,7 +60,7 @@ class Response
      * @return \Illuminate\Http\JsonResponse|object
      * @throws \Exception
      */
-    public static function responseWarning(array $data, $statusCode = BaseResponse::HTTP_FOUND)
+    public static function responseWarning($data, $statusCode = BaseResponse::HTTP_FOUND)
     {
         self::validateStatusCode(self::STATUS_WARNING, $statusCode);
 
@@ -80,7 +80,7 @@ class Response
      * @return \Illuminate\Http\JsonResponse|object
      * @throws \Exception
      */
-    public static function responseFail(array $data, $statusCode = BaseResponse::HTTP_BAD_REQUEST)
+    public static function responseFail($data, $statusCode = BaseResponse::HTTP_BAD_REQUEST)
     {
         self::validateStatusCode(self::STATUS_FAIL, $statusCode);
 

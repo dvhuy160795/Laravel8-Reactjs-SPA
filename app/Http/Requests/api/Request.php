@@ -14,9 +14,9 @@ class Request extends FormRequest
         throw new HttpResponseException(
             response()->json([
                  'data' => null,
-                 'code' => Response::HTTP_OK,
+                 'code' => Response::HTTP_FOUND,
                  'message' => $validator->errors()->all()[0]
-             ])
+             ], Response::HTTP_INTERNAL_SERVER_ERROR)
         );
     }
 }
