@@ -5,6 +5,11 @@ namespace App\Http\Requests\api\Auth;
 use App\Http\Requests\api\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class RegisterRequest
+ *
+ * @package App\Http\Requests\api\Auth
+ */
 class RegisterRequest extends Request
 {
     /**
@@ -25,7 +30,7 @@ class RegisterRequest extends Request
     public function rules()
     {
         return [
-            'email' => 'required',
+            'email' => 'required|email|unique:users,email',
             'name' => 'required',
             'password' => 'required',
             'photo' => 'required',

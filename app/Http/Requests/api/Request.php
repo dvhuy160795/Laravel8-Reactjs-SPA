@@ -12,11 +12,14 @@ class Request extends FormRequest
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
-            response()->json([
+            response()->json(
+                [
                  'data' => null,
-                 'code' => Response::HTTP_FOUND,
-                 'message' => $validator->errors()->all()[0]
-             ], Response::HTTP_INTERNAL_SERVER_ERROR)
+                 'statusCode' => Response::HTTP_FOUND,
+                 'messages' => $validator->errors()->all()
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            )
         );
     }
 }

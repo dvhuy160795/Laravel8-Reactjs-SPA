@@ -25,10 +25,8 @@ export const post = (resource, data) => {
     body: makeFromData(data),
     headers: headers,
   })
-      .then(handleResponse)
-      // .then((response) => response.json())
+      .then((response) => response.json())
       // .then(handleResponse)
-      // .catch(handleError)
 }
 
 /**
@@ -44,7 +42,7 @@ export const put = (resource, data) => {
     headers: headers,
   })
       .then((response) => response.json())
-      .catch(handleError)
+      // .catch(handleError)
 }
 
 /**
@@ -60,7 +58,7 @@ export const patch = (resource, data) => {
     headers: headers,
   })
       .then((response) => response.json())
-      .catch(handleError)
+      // .catch(handleError)
 }
 
 /**
@@ -92,11 +90,11 @@ export const customRequest = (method, resource, data) => {
     body: JSON.stringify(makeFromData(data)),
     headers: headers,
   })
-      .catch(handleError)
-      .then(handleResponse)
+      // .catch(handleError)
+      // .then(handleResponse)
       .then((response) => response.json())
 
-      .then((json) => console.log(json))
+      // .then((json) => console.log(json))
 
 }
 
@@ -120,26 +118,30 @@ const handleError = error => {
  */
 const handleResponse = response => {
     const status = response.status;
-    console.log(response)
+
     if (status === 200) {
         return response.data
     }
 
-    if (status === 400) {
-        alert('Permission denied!')
-    }
-
-    if (status === 401) {
-        alert('Permission denied!')
-    }
-
-    if (status === 403) {
-        alert('Permission denied!')
-    }
-
-    if (status === 302) {
-        alert('invalid')
-    }
+    return response.messages
+    // if (status === 500) {
+    // }
+    //
+    // if (status === 400) {
+    //     alert('Permission denied!')
+    // }
+    //
+    // if (status === 401) {
+    //     alert('Permission denied!')
+    // }
+    //
+    // if (status === 403) {
+    //     alert('Permission denied!')
+    // }
+    //
+    // if (status === 302) {
+    //     alert('invalid')
+    // }
 }
 
 export default {

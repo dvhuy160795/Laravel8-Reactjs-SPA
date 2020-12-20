@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import Attachment from "components/Attachment";
 import {register} from "api/auth";
-import {post} from "common/api"
+import Messages from "components/Messages";
 
 const FormUser = () => {
     const [email, setEmail] = useState('')
@@ -11,6 +11,7 @@ const FormUser = () => {
     const [password, setPassword] = useState('')
     const [file, setFile] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [messages, setMessages] = useState([])
 
     const { t, i18n } = useTranslation();
 
@@ -26,12 +27,24 @@ const FormUser = () => {
         formData.append("name", name)
         formData.append("password", password)
         formData.append("photo", file)
-        return post('auth/register',{
+        return register({
             "email" : email,
             "name" : name,
             "password" : password,
             "photo" : file,
-        }).then(() => setLoading(false))
+        }).then((response) => {
+            setLoading(false)
+            const status = response.statusCode;
+            if (status === 200) {
+                window.location.href = '/';
+                return response.data
+            }
+
+            setMessages(response.messages);
+            setTimeout(() => {
+                setMessages([])
+            }, 3000);
+        })
 
     }
 
@@ -56,7 +69,7 @@ const FormUser = () => {
                         <input type="text" name="password" value={password} onChange={(el) => setPassword(el.target.value)}/>
                     </label>
                 </div>
-
+                <Messages messages={messages}></Messages>
                 <Attachment
                     onFileSelectSuccess={(file) => setFile(file)}
                     onFileSelectError={({ error }) => alert(error)}

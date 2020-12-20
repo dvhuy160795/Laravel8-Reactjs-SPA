@@ -50,6 +50,41 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD:-qwerty123456}
     ports:
       - 1203:3306
+  redis:
+    build:
+      context: .docker/Redis
+    volumes:
+      - ./redis:/data
+    restart: "no"
+    ports:
+      - 6379:6379
+  socket:
+    build:
+      context: .docker/Socket
+    depends_on:
+      - redis
+      - api
+      - queue
+    volumes:
+      - ./source/.env:/app/.env
+    restart: "no"
+    ports:
+      - 6001:6001
+  queue:
+    build:
+      context: .docker/Queue
+    restart: "no"
+    depends_on:
+      - db
+      - api
+      - redis
+    volumes:
+      - ./:/var/www/html
+      - ./storage/logs/supervisor:/var/log/supervisor
+      - ./storage/logs/queue:/var/www/html/storage/logs
+      - .docker/Queue/Config/etc/supervisor/:/etc/supervisor/conf.d
+      - .docker/Queue/Config/etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - .docker/Queue/Config/etc/php/php.ini-development:/usr/local/etc/php/php.ini-development
 #disk
 volumes:
   dir-site:

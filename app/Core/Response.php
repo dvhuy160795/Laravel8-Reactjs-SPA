@@ -4,6 +4,11 @@ namespace App\Core;
 
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
+/**
+ * Class Response
+ *
+ * @package App\Core
+ */
 class Response
 {
     const STATUS_CONTINUE = '1';
@@ -26,7 +31,7 @@ class Response
 
         $result = [
             'statusCode' => $statusCode,
-            'message' => BaseResponse::$statusTexts[$statusCode],
+            'messages' => [BaseResponse::$statusTexts[$statusCode]],
             'data' => $data
         ];
         return response()->json($result, $statusCode);
@@ -46,7 +51,7 @@ class Response
 
         $result = [
             'statusCode' => $statusCode,
-            'message' => BaseResponse::$statusTexts[$statusCode],
+            'messages' => [BaseResponse::$statusTexts[$statusCode]],
             'data' => $data
         ];
         return response()->json($result, $statusCode);
@@ -66,7 +71,7 @@ class Response
 
         $result = [
             'statusCode' => $statusCode,
-            'message' => BaseResponse::$statusTexts[$statusCode],
+            'messages' => [BaseResponse::$statusTexts[$statusCode]],
             'data' => $data
         ];
         return response()->json($result, $statusCode);
@@ -86,7 +91,9 @@ class Response
 
         $result = [
             'statusCode' => $statusCode,
-            'message' => BaseResponse::$statusTexts[$statusCode],
+            'messages' => [
+                BaseResponse::$statusTexts[$statusCode]
+            ],
             'data' => $data
         ];
         return response()->json($result, $statusCode);

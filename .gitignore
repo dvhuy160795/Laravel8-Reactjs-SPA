@@ -20,3 +20,4 @@ phpcs.phar
 /nginx-app
 db
 .DS_Store
+/redis
