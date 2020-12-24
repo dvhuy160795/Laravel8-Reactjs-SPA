@@ -1,60 +1,83 @@
 <?php
 
+/**
+ * Repository interface - Methods need have
+ *
+ * @author HuyDV  <dvhuy160795@gmail.com>
+ */
 
 namespace App\Repositories;
 
-
-use Illuminate\Database\Eloquent\Model;
-
+/**
+ * Interface RepositoryInterface
+ *
+ * @package App\Repositories
+ * @author  HuyDV  <dvhuy160795@gmail.com>
+ */
 interface RepositoryInterface
 {
+
     /**
-     * Get model from table model
+     * Get model from table model.
      *
-     * @return Illuminate\Database\Eloquent\Model
+     * @return object
      */
-    public function model();
+    public function model(): object;
 
     /**
-     * @param $id
-     * @return Illuminate\Database\Eloquent\Model
+     * Get one record initial.
+     *
+     * @param  int $id : Record's Id.
+     * @return object|null
      */
-    public function getOne($id);
+    public function getOne(int $id);
 
     /**
-     * @param array $conditions
-     * @return Illuminate\Database\Eloquent\Model
+     * Get many record initial.
+     *
+     * @param  array $conditions : Query conditions.
+     * @return object
      */
-    public function getMany(array $conditions);
+    public function getMany(array $conditions): object;
 
     /**
-     * @param array $data
-     * @return Illuminate\Database\Eloquent\Model
+     * Insert new record initial.
+     *
+     * @param  array $data : New record's data.
+     * @return object
      */
-    public function insert(array $data);
+    public function insert(array $data): object;
 
     /**
-     * @param array $data
-     * @return Illuminate\Database\Eloquent\Model
+     * Insert multi record initial.
+     *
+     * @param  array $datas : List record's data.
+     * @return object
      */
-    public function insertMany(array $data);
+    public function insertMany(array $datas): object;
 
     /**
-     * @param $id
-     * @param array $data
-     * @return mixed
+     * Update record initial.
+     *
+     * @param  int   $id   : Record's id need update.
+     * @param  array $data : Record's data need update.
+     * @return object
      */
-    public function update($id, array $data);
+    public function update(int $id, array $data): object;
 
     /**
-     * @param $id
-     * @return mixed
+     * Delete record initial.
+     *
+     * @param  int $id : Record's id need delete.
+     * @return bool
      */
-    public function delete($id);
+    public function delete(int $id): bool;
 
     /**
-     * @param array $conditions
-     * @return mixed
+     * Delete multi record initial.
+     *
+     * @param  array $conditions : Query Conditions.
+     * @return bool
      */
-    public function deleteMany(array $conditions);
+    public function deleteMany(array $conditions): bool;
 }

@@ -6,7 +6,7 @@ readonly RED_COLOR='\033[0;31m'
 readonly ORANGE_COLOR='\033[0;33m'
 readonly GREEN_COLOR='\033[0;32m'
 readonly NO_COLOR='\033[0m'
-readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!*.blade.php' ':!vendor/' ':!config/' ':!routes/' ':!app/Providers')
+readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!*.blade.php' ':!vendor/' ':!config/' ':!routes/' ':!app/Providers' ':!app/Console/Kernel.php')
 readonly PHP_STAGED_FILES_SEPARATE_BY_SPACE=$(echo -e $PHP_STAGED_FILES | tr "\n" " ")
 
 output_start() {
@@ -57,7 +57,7 @@ check_coding_conversion() {
     do
         [[ ! -f $file ]] && continue
         php tools/git/hooks/phpcbf.phar $file 1>/dev/null
-        php tools/git/hooks/phpcs.phar --standard=psr2 $file 2>/dev/null
+        php tools/git/hooks/phpcs.phar --standard=tools/git/hooks/CodeSnifferRule --report=emacs $file 2>/dev/null
         [[ $? -ne 0 ]] && EXIT_CODE=1
     done
     output_ending_line
@@ -68,8 +68,8 @@ check_debugging() {
     for file in ${PHP_STAGED_FILES_SEPARATE_BY_SPACE};
     do
         [[ ! -f $file ]] && continue
-        grep -rnw $file -e 'dump(' -e 'dd(' -e 'exit' -e 'die(' -e 'var_dump('
-        [[ $? -ne 0 ]] && EXIT_CODE=1
+        grep -rn $file -e 'dump(' -e 'dd(' -e 'exit' -e 'die(' -e 'var_dump('
+        [[ $? -ne 1 ]] && EXIT_CODE=1
     done
     output_ending_line
 }

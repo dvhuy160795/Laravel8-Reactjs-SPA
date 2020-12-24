@@ -1,5 +1,11 @@
 <?php
 
+/**
+ *  User's model.
+ *
+ * @author HuyDV  <dvhuy160795@gmail.com>
+ */
+
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -8,6 +14,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Class User
+ *
+ * @package App\Models
+ * @author  HuyDV  <dvhuy160795@gmail.com>
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -39,9 +51,5 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-
+    protected $casts = ['email_verified_at' => 'datetime'];
 }
