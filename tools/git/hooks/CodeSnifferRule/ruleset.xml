@@ -14,7 +14,10 @@
         <exclude name="PEAR.Commenting.ClassComment.MissingCategoryTag"/>
         <exclude name="PEAR.Commenting.ClassComment.MissingLicenseTag"/>
         <exclude name="PEAR.Commenting.ClassComment.MissingLinkTag"/>
+        <exclude name="PEAR.Commenting.FileComment.Missing"/>
         <exclude name="PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore"/>
+        <exclude name="PEAR.Commenting.FunctionComment.MissingParamComment"/>
+        <exclude name="PEAR.NamingConventions.ValidVariableName.PrivateNoUnderscore"/>
     </rule>
     <rule ref="Generic">
         <exclude name="Generic.Commenting.DocComment.NonParamGroup"/>

@@ -9,8 +9,8 @@ readonly NO_COLOR='\033[0m'
 readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!*.blade.php' ':!vendor/' ':!config/' ':!routes/' ':!app/Providers' ':!app/Console/Kernel.php')
 readonly PHP_STAGED_FILES_SEPARATE_BY_SPACE=$(echo -e $PHP_STAGED_FILES | tr "\n" " ")
 
-output_start() {
-    echo "${BACKGROUND_GREEN_COLOR}$1${NO_COLOR}"
+output() {
+    echo "${ORANGE_COLOR}$1${NO_COLOR}"
 }
 
 output_error() {
@@ -34,7 +34,7 @@ check_syntax_error() {
     #check empty string
     [[ -z "${PHP_STAGED_FILES}" ]] && return 0
 
-    echo "check_syntax_error"
+    output "<============ Begin check syntax error ============>"
     php -v > /dev/null 2>&1
 
     if [[ "$?" != "0" ]]; then
@@ -48,35 +48,66 @@ check_syntax_error() {
         output_warning php -l $file 1>/dev/null
         [[ $? -ne 0 ]] && EXIT_CODE=1
     done
-    output_ending_line
+    output "<============ End check syntax error ============>"
 }
 
-check_coding_conversion() {
-    echo "check_coding_conversion"
+fix_format_code() {
+    output "<============ Begin fix format code ============>"
     for file in ${PHP_STAGED_FILES_SEPARATE_BY_SPACE};
     do
         [[ ! -f $file ]] && continue
-        php tools/git/hooks/phpcbf.phar $file 1>/dev/null
+        echo "${GREEN_COLOR}Detect file: $file${NO_COLOR}"
+        php tools/git/hooks/phpcbf.phar $file 2>/dev/null
+        git add $file
+    done
+    output "<============ End fix format code ============>"
+}
+
+check_code_sniffer() {
+    output "<============ Begin check code sniffer ============>"
+    for file in ${PHP_STAGED_FILES_SEPARATE_BY_SPACE};
+    do
+        [[ ! -f $file ]] && continue
+        echo "${GREEN_COLOR}Detect file: $file${NO_COLOR}"
         php tools/git/hooks/phpcs.phar --standard=tools/git/hooks/CodeSnifferRule --report=emacs $file 2>/dev/null
         [[ $? -ne 0 ]] && EXIT_CODE=1
     done
-    output_ending_line
+    output "<============ End check code sniffer ============>"
 }
 
-check_debugging() {
-    echo "check_debugging"
+check_mess_code() {
+    output "<============ Begin check mess code ============>"
     for file in ${PHP_STAGED_FILES_SEPARATE_BY_SPACE};
     do
         [[ ! -f $file ]] && continue
+        echo "${GREEN_COLOR}Detect file: $file${NO_COLOR}"
+        php tools/git/hooks/phpmd.phar $file ansi codesize,unusedcode,naming 2>/dev/null
+        [[ $? -ne 0 ]] && EXIT_CODE=1
+    done
+    output "<============ End check mess code ============>"
+}
+
+check_debugging() {
+    output "<============ Begin check debugging ============>"
+    for file in ${PHP_STAGED_FILES_SEPARATE_BY_SPACE};
+    do
+        [[ ! -f $file ]] && continue
+        echo "${GREEN_COLOR}Detect file: $file${NO_COLOR}"
         grep -rn $file -e 'dump(' -e 'dd(' -e 'exit' -e 'die(' -e 'var_dump('
         [[ $? -ne 1 ]] && EXIT_CODE=1
     done
-    output_ending_line
+    output "<============ End check debugging ============>"
 }
 
 main() {
     check_syntax_error
-    check_coding_conversion
+    echo "\n"
+    fix_format_code
+    echo "\n"
+    check_code_sniffer
+    echo "\n"
+    check_mess_code
+    echo "\n"
     check_debugging
     exit $EXIT_CODE
 }
