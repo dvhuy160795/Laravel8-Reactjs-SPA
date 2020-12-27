@@ -12,17 +12,19 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rules\In;
 
 /**
  * Class AuthController
  *
  * @package App\Http\Controllers\Api
+ * @author  HuyDV <dvhuy160795@gmail.com>
  */
 class AuthController extends Controller
 {
 
     /**
+     * User's service
+     *
      * @var UserService
      */
     private $userService;
@@ -54,13 +56,13 @@ class AuthController extends Controller
         }
 
         return back()->withErrors(
-            [
-            'email' => 'The provided credentials do not match our records.',
-            ]
+            ['email' => 'The provided credentials do not match our records.']
         );
     }
 
     /**
+     * Register new user
+     *
      * @param  RegisterRequest $registerRequest
      * @return \Illuminate\Http\JsonResponse|object
      * @throws \Exception
@@ -76,7 +78,9 @@ class AuthController extends Controller
         if (!$result) {
             return Response::responseFail(['message' => ['Insert Fail!!!']]);
         }
-        dispatch(new InfinityJob())->onQueue('infinity-job');
+
+        $infinityJob = new InfinityJob();
+        dispatch($infinityJob)->onQueue('infinity-job');
         return Response::responseSusscess($result);
     }
 }
