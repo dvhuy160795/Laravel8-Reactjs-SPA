@@ -33,8 +33,27 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        $this->reportable(
+            function (Throwable $e) {
+                //
+            }
+        );
+    }
+
+    /**
+     * Render response for API
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  Throwable                $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws Throwable
+     */
+    public function render($request, Throwable $e)
+    {
+        return response()->json(
+            [
+            'messages' => [$e->getMessage()]
+            ], 404
+        );
     }
 }

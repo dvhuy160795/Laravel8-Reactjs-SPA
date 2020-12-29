@@ -10,7 +10,6 @@ export const makeFromData = (data) => {
     for (const field in data) {
         formData.append(field, data[field])
     }
-// console.log(JSON.stringify(formData));
     return formData
 }
 

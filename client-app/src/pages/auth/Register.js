@@ -22,11 +22,6 @@ const FormUser = () => {
     const submitForm = () => {
         setLoading(true);
 
-        const formData = new FormData()
-        formData.append("email", email)
-        formData.append("name", name)
-        formData.append("password", password)
-        formData.append("photo", file)
         return register({
             "email" : email,
             "name" : name,
