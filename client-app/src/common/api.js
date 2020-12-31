@@ -19,14 +19,17 @@ export const get = (resource) => {
  * @param data
  * @returns {*}
  */
-export const post = (resource, data) => {
+export const post = (resource, data, callback) => {
   return fetch(baseURL + resource, {
     method: 'POST',
     body: makeFromData(data),
     headers: headers,
   })
-      .then((response) => response.json())
-      // .then(handleResponse)
+      // .then((response) => response.json())
+      .then(handleResponse)
+      .catch(error => {
+          console.log(error)
+      })
 }
 
 /**
@@ -118,30 +121,18 @@ const handleError = error => {
  */
 const handleResponse = response => {
     const status = response.status;
+    let data = response.json();
 
     if (status === 200) {
-        return response.data
+        return data
     }
 
-    return response.messages
-    // if (status === 500) {
-    // }
-    //
-    // if (status === 400) {
-    //     alert('Permission denied!')
-    // }
-    //
-    // if (status === 401) {
-    //     alert('Permission denied!')
-    // }
-    //
-    // if (status === 403) {
-    //     alert('Permission denied!')
-    // }
-    //
-    // if (status === 302) {
-    //     alert('invalid')
-    // }
+    if (status === 404) {
+        throw new Error(data);
+        return data;
+    }
+
+    return data
 }
 
 export default {
