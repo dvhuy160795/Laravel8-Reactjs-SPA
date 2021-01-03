@@ -40,20 +40,20 @@ class Handler extends ExceptionHandler
         );
     }
 
-    /**
-     * Render response for API
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Throwable                $e
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws Throwable
-     */
-    public function render($request, Throwable $e)
-    {
-        return response()->json(
-            [
-            'messages' => [$e->getMessage()]
-            ], 404
-        );
-    }
+//    /**
+//     * Render response for API
+//     *
+//     * @param  \Illuminate\Http\Request $request
+//     * @param  Throwable                $e
+//     * @return \Symfony\Component\HttpFoundation\Response
+//     * @throws Throwable
+//     */
+//    public function render($request, Throwable $e)
+//    {
+//        return response()->json(
+//            [
+//            'messages' => [$e->getMessage()]
+//            ], 404
+//        );
+//    }
 }

@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {getListUsers} from "reducers/userReducers";
+import {baseURL} from "common/api";
 
 const ListUser = () => {
     const dispatch = useDispatch()
@@ -20,7 +21,7 @@ const ListUser = () => {
             <h1>List Users</h1>
             <ul>
                 { listUsers.map(user => <li key={user.id}>
-                    { user.name }
+                    { user.name } | { user.email } | <img src={ user.photo_path } width={50}/>
                 </li>)}
             </ul>
             <div onClick={() => setPage(page => ++page)} style={{width: 300}}>{page}</div>

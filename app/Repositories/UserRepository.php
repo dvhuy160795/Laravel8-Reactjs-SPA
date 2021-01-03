@@ -38,4 +38,16 @@ class UserRepository extends RepositoryAbstract
         // TODO: Implement insert() method.
         return new StdClass($user);
     }
+
+    /**
+     * Get list users.
+     *
+     * @param  array $fields
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getUsers(array $fields)
+    {
+        return $this->model()->select($fields)->get();
+    }
 }

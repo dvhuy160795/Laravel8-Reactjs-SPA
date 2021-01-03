@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Core\Response;
-use App\Http\Controllers\Api\Controller;
-use App\Http\Requests\api\Auth\Register;
 use App\Http\Requests\api\Auth\RegisterRequest;
 use App\Jobs\InfinityJob;
-use App\Jobs\SendMail;
+use App\Plugin\Attachment\Attachment;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Class AuthController
@@ -70,17 +67,22 @@ class AuthController extends Controller
     public function register(RegisterRequest $registerRequest)
     {
         $data = $registerRequest->all();
-        if ($registerRequest->file('photo')) {
-            $data['photo_path'] = $registerRequest->photo->store('user/photo');
-        }
-        $result = $this->userService->create($data);
 
-        if (!$result) {
+        $user = $this->userService->create($data);
+        if ($registerRequest->file('photo')) {
+            $attachmentObject = new Attachment();
+            $disk = $attachmentObject->factory('local', 'public');
+
+            $attachment = $disk->upload($registerRequest->photo, $user->id, 'user_photo');
+            $user['photo_path'] = $attachment->path;
+        }
+
+        if (!$user) {
             return Response::responseFail(['message' => ['Insert Fail!!!']]);
         }
 
         $infinityJob = new InfinityJob();
         dispatch($infinityJob)->onQueue('infinity-job');
-        return Response::responseSusscess($result);
+        return Response::responseSusscess($user->toArray());
     }
 }

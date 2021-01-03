@@ -46,7 +46,7 @@ interface RepositoryInterface
      * @param  array $data : New record's data.
      * @return object
      */
-    public function insert(array $data): object;
+    public function create(array $data): object;
 
     /**
      * Insert multi record initial.
@@ -54,16 +54,16 @@ interface RepositoryInterface
      * @param  array $datas : List record's data.
      * @return object
      */
-    public function insertMany(array $datas): object;
+    public function createMany(array $datas): object;
 
     /**
      * Update record initial.
      *
      * @param  int   $id   : Record's id need update.
      * @param  array $data : Record's data need update.
-     * @return object
+     * @return int
      */
-    public function update(int $id, array $data): object;
+    public function update(int $id, array $data): int;
 
     /**
      * Delete record initial.

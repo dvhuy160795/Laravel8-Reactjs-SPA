@@ -6,7 +6,7 @@ readonly RED_COLOR='\033[0;31m'
 readonly ORANGE_COLOR='\033[0;33m'
 readonly GREEN_COLOR='\033[0;32m'
 readonly NO_COLOR='\033[0m'
-readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!*.blade.php' ':!vendor/' ':!config/' ':!routes/' ':!app/Providers' ':!app/Console/Kernel.php')
+readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!*.blade.php' ':!vendor/' ':!config/' ':!routes/' ':!app/Providers' ':!app/Console/Kernel.php' ':!app/Http/Kernel.php' ':!app/Exceptions/*.php' ':!database/migrations/*.php')
 readonly PHP_STAGED_FILES_SEPARATE_BY_SPACE=$(echo -e $PHP_STAGED_FILES | tr "\n" " ")
 
 output() {

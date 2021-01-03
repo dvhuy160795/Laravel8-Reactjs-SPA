@@ -8,8 +8,10 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Exception;
+use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * Class UserService.
@@ -46,5 +48,35 @@ class UserService extends ServiceAbstract
     public function getUser()
     {
         return $this->repository->model();
+    }
+
+    /**
+     * Get list user
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getUsers()
+    {
+        $fields = [
+            'id',
+            'name',
+            'email',
+            'photo_path',
+        ];
+        return $this->repository->getUsers($fields)->toArray();
+    }
+
+    /**
+     * Update user.
+     *
+     * @param  int   $id
+     * @param  array $data
+     * @return int
+     * @throws Exception
+     */
+    public function updateUser(int $id, array $data)
+    {
+        return $this->repository->update($id, $data);
     }
 }

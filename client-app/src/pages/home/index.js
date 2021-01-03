@@ -1,9 +1,10 @@
 import React from 'react'
+import ListUser from "pages/users/ListUser";
 
 const Home = () => {
     return (
         <>
-            Home
+            <ListUser/>
         </>
     )
 }

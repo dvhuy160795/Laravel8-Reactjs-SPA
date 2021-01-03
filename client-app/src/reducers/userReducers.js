@@ -13,7 +13,7 @@ export const getListUsers = () => {
             {
                 type: GET_LIST_USERS,
                 payload: {
-                    listUsers: response
+                    listUsers: response.data
                 }
             }
         ));

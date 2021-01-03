@@ -65,13 +65,14 @@ abstract class RepositoryAbstract implements RepositoryInterface
     /**
      * Get one record.
      *
-     * @param  int $id : Record's Id.
+     * @param  int   $id    : Record's Id.
+     * @param  array $field
      * @return object|null
      * @throws Exception
      */
-    public function getOne(int $id)
+    public function getOne(int $id, array $field = ['*'])
     {
-        return $this->model()->findOrFail($id);
+        return $this->model()->findOrFail($id, $field);
     }
 
     /**
@@ -105,7 +106,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
      * @return object
      * @throws Exception
      */
-    public function insertMany(array $datas): object
+    public function createMany(array $datas): object
     {
         return $this->model()->insert($datas);
     }
@@ -115,12 +116,12 @@ abstract class RepositoryAbstract implements RepositoryInterface
      *
      * @param  int   $id   : Record's id need update.
      * @param  array $data : Record's data need update.
-     * @return object
+     * @return int
      * @throws Exception
      */
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): int
     {
-        return $this->model()->update($id, $data);
+        return $this->model()->where('id', $id)->update($data);
     }
 
     /**
