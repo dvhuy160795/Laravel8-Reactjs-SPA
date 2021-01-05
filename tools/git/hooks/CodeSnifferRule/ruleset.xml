@@ -16,11 +16,11 @@
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.FoundInImplementedInterfaceBeforeLastUsed">
         <exclude-pattern>*/app/Rules/*</exclude-pattern>
     </rule>
-    <rule ref="Squiz.Commenting.FunctionComment.Missing"></rule>
-    <rule ref="Squiz.Commenting.FunctionComment.MissingParamTag"></rule>
-    <rule ref="Squiz.Commenting.FunctionComment.MissingReturn"></rule>
-    <rule ref="Generic.Formatting.DisallowMultipleStatements.SameLine"></rule>
-    <rule ref="Generic.Commenting.DocComment.MissingShort"></rule>
+    <rule ref="Squiz.Commenting.FunctionComment.Missing"/>
+    <rule ref="Squiz.Commenting.FunctionComment.MissingParamTag"/>
+    <rule ref="Squiz.Commenting.FunctionComment.MissingReturn"/>
+    <rule ref="Generic.Formatting.DisallowMultipleStatements.SameLine"/>
+    <rule ref="Generic.Commenting.DocComment.MissingShort"/>
 
     <exclude-pattern>*/app/Models/*</exclude-pattern>
 </ruleset>
