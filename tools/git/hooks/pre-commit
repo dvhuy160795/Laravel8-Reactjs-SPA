@@ -6,7 +6,7 @@ readonly RED_COLOR='\033[0;31m'
 readonly ORANGE_COLOR='\033[0;33m'
 readonly GREEN_COLOR='\033[0;32m'
 readonly NO_COLOR='\033[0m'
-readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!*.blade.php' ':!vendor/' ':!config/' ':!routes/' ':!app/Providers' ':!app/Console/Kernel.php' ':!app/Http/Kernel.php' ':!app/Exceptions/*.php' ':!database/migrations/*.php')
+readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!*.blade.php' ':!vendor/' ':!config/' ':!routes/' ':!app/Providers' ':!app/Models' ':!app/Rules' ':!app/Console/Kernel.php' ':!app/Http/Kernel.php' ':!app/Exceptions/*.php' ':!database/migrations/*.php')
 readonly PHP_STAGED_FILES_SEPARATE_BY_SPACE=$(echo -e $PHP_STAGED_FILES | tr "\n" " ")
 
 output() {
@@ -14,7 +14,7 @@ output() {
 }
 
 output_error() {
-    echo -e " - ${RED_COLOR}$1${NO_COLOR}"
+    echo -e "${RED_COLOR}$1${NO_COLOR}"
 }
 
 output_warning() {
@@ -57,7 +57,7 @@ fix_format_code() {
     do
         [[ ! -f $file ]] && continue
         echo -e "${GREEN_COLOR}Detect file: $file${NO_COLOR}"
-        readonly ERROR_FORMAT=$(php tools/git/hooks/phpcbf.phar $file 2>/dev/null)
+        ERROR_FORMAT=$(php tools/git/hooks/phpcbf.phar $file 2>/dev/null)
         output_error "${ERROR_FORMAT}"
         git add $file
     done
@@ -70,8 +70,8 @@ check_code_sniffer() {
     do
         [[ ! -f $file ]] && continue
         echo -e "${GREEN_COLOR}Detect file: $file${NO_COLOR}"
-        readonly ERROR_SNIFFER=$(php tools/git/hooks/phpcs.phar --standard=tools/git/hooks/CodeSnifferRule --report=emacs $file 2>/dev/null)
-        [[ ERROR_SNIFFER -ne '' ]] && output_error "${ERROR_SNIFFER}"
+        ERROR_SNIFFER=$(php tools/git/hooks/phpcs.phar --standard=tools/git/hooks/CodeSnifferRule --report=xml $file 2>/dev/null)
+        output_error "${ERROR_SNIFFER}"
         [[ $? -ne 0 ]] && EXIT_CODE=1
     done
     output "<============ End check code sniffer ============>"
@@ -83,7 +83,7 @@ check_mess_code() {
     do
         [[ ! -f $file ]] && continue
         echo -e "${GREEN_COLOR}Detect file: $file${NO_COLOR}"
-        readonly ERROR_MESS=$(php tools/git/hooks/phpmd.phar $file ansi codesize,unusedcode,naming 2>/dev/null)
+        ERROR_MESS=$(php tools/git/hooks/phpmd.phar $file ansi tools/git/hooks/PHPMD 2>/dev/null)
         output_error "${ERROR_MESS}"
         [[ $? -ne 0 ]] && EXIT_CODE=1
     done
@@ -96,7 +96,7 @@ check_debugging() {
     do
         [[ ! -f $file ]] && continue
         echo -e "${GREEN_COLOR}Detect file: $file${NO_COLOR}"
-        readonly ERROR=$(grep -rn $file -e 'dump(' -e 'dd(' -e 'exit' -e 'die(' -e 'var_dump(')
+        ERROR=$(grep -rn $file -e 'dump(' -e 'dd(' -e 'exit' -e 'die(' -e 'var_dump(')
         output_error "${ERROR}"
         [[ $? -ne 1 ]] && EXIT_CODE=1
     done

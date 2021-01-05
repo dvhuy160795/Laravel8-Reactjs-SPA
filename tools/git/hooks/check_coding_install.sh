@@ -18,5 +18,4 @@ if [ ! -f PHPMD_PATH ]; then
 fi
 
 # copy precommit to .git
-
-bash -c "pwd"
+cp pre-commit ../../../.git/hooks/

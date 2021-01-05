@@ -19,6 +19,7 @@
         <exclude name="PEAR.Commenting.FunctionComment.MissingParamComment"/>
         <exclude name="PEAR.NamingConventions.ValidVariableName.PrivateNoUnderscore"/>
         <exclude name="PEAR.Commenting.ClassComment.Missing"/>
+        <exclude name="PEAR.Commenting.ClassComment.MissingAuthorTag"/>
     </rule>
     <rule ref="Generic">
         <exclude name="Generic.Commenting.DocComment.NonParamGroup"/>
@@ -64,6 +65,7 @@
         <exclude name="Squiz.Commenting.FileComment.Missing"/>
         <exclude name="Squiz.Commenting.ClassComment.Missing"/>
         <exclude name="Squiz.Arrays.ArrayDeclaration.DoubleArrowNotAligned"/>
+        <exclude name="Squiz.PHP.DisallowInlineIf.Found"/>
     </rule>
     <rule ref="Generic.Files.LineLength">
         <properties>
@@ -71,5 +73,12 @@
             <property name="absoluteLineLimit" value="120" />
         </properties>
     </rule>
+    <rule ref="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing">
+        <exclude-pattern>*/app/Rules/*</exclude-pattern>
+    </rule>
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.FoundInImplementedInterfaceBeforeLastUsed">
+        <exclude-pattern>*/app/Rules/*</exclude-pattern>
+    </rule>
 
+    <exclude-pattern>*/app/Models/*</exclude-pattern>
 </ruleset>
